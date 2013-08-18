@@ -1,4 +1,12 @@
-HeaderPersister
-===============
+`HeaderPersister` is a small utility class that persist the header of individual `GroupItem`s while scrolling. It is not tied to any particular itemsControl derived class, I canfirmed a correct behavior for `ListBox`, `ListView` and `TreeView`.
 
-A small utility class that allows the persistence of individual GroupItem headers.
+Usage
+=====
+The usage of the `HeaderPersister` is straightforward, make sure to:
+
++ Bind to your `CollectionViewSource` instance and define your `GroupDescriptions` collection.
++ Set the attached property `HeaderPersister.IsEnabled` to `true`.
++ Duplicate the visual tree of the `GroupItem` header in the `HeaderPersister.HeaderTemplate` attached property.
+
+For more information, check the following blog post: http://abdelkarim.co/2013/08/18/updating-headerpersister-to-work-with-any-itemscontrol/
+
