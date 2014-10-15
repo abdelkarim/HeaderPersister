@@ -8,5 +8,5 @@ The usage of the `HeaderPersister` is straightforward, make sure to:
 + Set the attached property `HeaderPersister.IsEnabled` to `true`.
 + Duplicate the visual tree of the `GroupItem` header in the `HeaderPersister.HeaderTemplate` attached property.
 
-For more information, check the following blog post: http://abdelkarim.co/2013/08/18/updating-headerpersister-to-work-with-any-itemscontrol/
+For more information, check the following blog post: http://www.qarim.net/2013/08/16/wpf-persistent-group-headers-for-the-listbox-control/
 
