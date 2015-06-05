@@ -135,7 +135,7 @@
                 // if no container is defined.
                 var container = generator.ContainerFromItem(item) as GroupItem;
                 if (container == null) {
-                    return;
+                    continue;
                 }
 
                 // Is the container in view?
