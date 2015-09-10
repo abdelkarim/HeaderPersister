@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
-using WpfApplication1.Annotations;
 
-namespace WpfApplication1 {
-    public class HeaderAdorner : Adorner {
+namespace WpfGhost
+{
+    public class HeaderAdorner : Adorner
+    {
         private readonly ContentControl _contentControl;
 
-        public HeaderAdorner([NotNull] UIElement adornedElement) : base(adornedElement) {
+        public HeaderAdorner(UIElement adornedElement) : base(adornedElement)
+        {
             _contentControl = new ContentControl();
 
             // define a two way binding to the template
-            var headerTemplateBinding = new Binding {
+            var headerTemplateBinding = new Binding
+            {
                 Source = this,
                 Path = new PropertyPath(HeaderTemplateProperty),
                 Mode = BindingMode.TwoWay
@@ -24,7 +26,8 @@ namespace WpfApplication1 {
             _contentControl.SetBinding(ContentControl.ContentTemplateProperty, headerTemplateBinding);
 
             // content binding
-            var contentBinding = new Binding {
+            var contentBinding = new Binding
+            {
                 Source = this,
                 Path = new PropertyPath(DataContextProperty),
                 Mode = BindingMode.TwoWay
@@ -35,22 +38,25 @@ namespace WpfApplication1 {
             this.AddLogicalChild(_contentControl);
         }
 
-        protected override int VisualChildrenCount {
-            get {
-                return 1;
-            }
+        protected override int VisualChildrenCount
+        {
+            get { return 1; }
         }
 
-        protected override Visual GetVisualChild(int index) {
-            if (index != 0) {
+        protected override Visual GetVisualChild(int index)
+        {
+            if (index != 0)
+            {
                 throw new ArgumentOutOfRangeException("index");
             }
             return _contentControl;
         }
 
-        protected override IEnumerator LogicalChildren {
-            get {
-                var list = new ArrayList{_contentControl};
+        protected override IEnumerator LogicalChildren
+        {
+            get
+            {
+                var list = new ArrayList {_contentControl};
                 return list.GetEnumerator();
             }
         }
@@ -63,8 +69,8 @@ namespace WpfApplication1 {
         /// </summary>
         public static readonly DependencyProperty HeaderTemplateProperty = DependencyProperty.Register(
             "HeaderTemplate",
-            typeof(DataTemplate),
-            typeof(HeaderAdorner),
+            typeof (DataTemplate),
+            typeof (HeaderAdorner),
             new FrameworkPropertyMetadata(null));
 
         /// <summary>
@@ -75,22 +81,25 @@ namespace WpfApplication1 {
         /// </value>
         public DataTemplate HeaderTemplate
         {
-            get { return (DataTemplate)GetValue(HeaderTemplateProperty); }
+            get { return (DataTemplate) GetValue(HeaderTemplateProperty); }
             set { SetValue(HeaderTemplateProperty, value); }
         }
 
         #endregion
-        
-        protected override Size MeasureOverride(Size constraint) {
+
+        protected override Size MeasureOverride(Size constraint)
+        {
             _contentControl.Measure(constraint);
-            
+
             // get the AdornedElement size
             return this.AdornedElement.RenderSize;
         }
 
-        protected override Size ArrangeOverride(Size finalSize) {
+        protected override Size ArrangeOverride(Size finalSize)
+        {
             double top = this.Top;
-            if ((top + _contentControl.DesiredSize.Height) > finalSize.Height) {
+            if ((top + _contentControl.DesiredSize.Height) > finalSize.Height)
+            {
                 top = finalSize.Height - _contentControl.DesiredSize.Height;
             }
 
@@ -103,7 +112,8 @@ namespace WpfApplication1 {
 
         public double Top { get; set; }
 
-        public void UpdateLocation(double top) {
+        public void UpdateLocation(double top)
+        {
             this.Top = Math.Abs(top);
             this.InvalidateArrange();
         }

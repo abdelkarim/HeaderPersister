@@ -1,22 +1,35 @@
-﻿namespace WpfApplication1 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Documents;
-    using Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using WpfGhost.Helpers;
 
-    public static class HeaderPersister {
+namespace WpfGhost
+{
+    public static class HeaderPersister
+    {
+        #region "Fields"
+
         // maps an itemsControl to the currently highlighted group item
         private static readonly Dictionary<GroupItem, WeakReference<HeaderAdorner>> CurrentGroupItem;
+
+        #endregion
+
+        #region "Constructors"
 
         /// <summary>
         /// Initializes static members of the <see cref="HeaderPersister"/> class.
         /// </summary>
-        static HeaderPersister() {
+        static HeaderPersister()
+        {
             CurrentGroupItem = new Dictionary<GroupItem, WeakReference<HeaderAdorner>>();
         }
+
+        #endregion
+
+        #region "Properties"
 
         #region HeaderTempate
 
@@ -29,13 +42,15 @@
 
         /// <summary>
         /// </summary>
-        public static DataTemplate GetHeaderTemplate(DependencyObject d) {
+        public static DataTemplate GetHeaderTemplate(DependencyObject d)
+        {
             return (DataTemplate) d.GetValue(HeaderTemplateProperty);
         }
 
         /// <summary>
         /// </summary>
-        public static void SetHeaderTemplate(DependencyObject d, DataTemplate value) {
+        public static void SetHeaderTemplate(DependencyObject d, DataTemplate value)
+        {
             d.SetValue(HeaderTemplateProperty, value);
         }
 
@@ -56,7 +71,8 @@
         /// Gets the EnableHeaderFixing property. This dependency property 
         /// indicates ....
         /// </summary>
-        public static bool GetIsEnabled(DependencyObject d) {
+        public static bool GetIsEnabled(DependencyObject d)
+        {
             return (bool) d.GetValue(IsEnabledProperty);
         }
 
@@ -64,43 +80,51 @@
         /// Sets the EnableHeaderFixing property. This dependency property 
         /// indicates ....
         /// </summary>
-        public static void SetIsEnabled(DependencyObject d, bool value) {
+        public static void SetIsEnabled(DependencyObject d, bool value)
+        {
             d.SetValue(IsEnabledProperty, value);
         }
 
         /// <summary>
         /// Handles changes to the EnableHeaderFixing property.
         /// </summary>
-        private static void OnEnableHeaderFixingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        private static void OnEnableHeaderFixingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
             var targetItemsControl = (Control) d;
 
-            if ((bool)e.NewValue) {
+            if ((bool) e.NewValue)
+            {
                 targetItemsControl.Loaded += OnItemsControlLoaded;
                 targetItemsControl.Unloaded += OnItemsControlUnloaded;
             }
-            else {
+            else
+            {
                 targetItemsControl.Loaded -= OnItemsControlLoaded;
                 targetItemsControl.Unloaded -= OnItemsControlUnloaded;
             }
         }
 
-        private static void OnItemsControlLoaded(object sender, RoutedEventArgs args) {
+        private static void OnItemsControlLoaded(object sender, RoutedEventArgs args)
+        {
             var targetItemsControl = (ItemsControl) sender;
 
             // find the ScrollViewer
             var parentScrollViewer = targetItemsControl.FindChild<ScrollViewer>();
-            if (parentScrollViewer == null) {
+            if (parentScrollViewer == null)
+            {
                 return;
             }
             parentScrollViewer.ScrollChanged += OnScrollChanged;
         }
 
-        private static void OnItemsControlUnloaded(object sender, RoutedEventArgs args) {
+        private static void OnItemsControlUnloaded(object sender, RoutedEventArgs args)
+        {
             var targetItemsControl = (ItemsControl) sender;
 
             // find the ScrollViewer
             var parentScrollViewer = targetItemsControl.FindChild<ScrollViewer>();
-            if (parentScrollViewer == null) {
+            if (parentScrollViewer == null)
+            {
                 return;
             }
             parentScrollViewer.ScrollChanged -= OnScrollChanged;
@@ -108,16 +132,23 @@
 
         #endregion
 
-        private static void OnScrollChanged(object sender, ScrollChangedEventArgs e) {
+        #endregion
+
+        #region "Methods"
+
+        private static void OnScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
             var viewer = (ScrollViewer) sender;
-            
+
             //find the adorner layer on which we will store items
             AdornerLayer adornerLayer;
             var scrollContentPresenter = viewer.Template.FindName("PART_ScrollContentPresenter", viewer) as ScrollContentPresenter;
-            if (scrollContentPresenter != null) {
+            if (scrollContentPresenter != null)
+            {
                 adornerLayer = scrollContentPresenter.AdornerLayer;
             }
-            else {
+            else
+            {
                 return; // no need to continue
             }
 
@@ -127,14 +158,16 @@
 
             var generator = itemsControl.ItemContainerGenerator;
             var items = generator.Items.ToList();
-            
+
             // find the view rect
             var viewRect = new Rect(new Point(0, 0), scrollContentPresenter.RenderSize);
 
-            foreach (var item in items) {
+            foreach (var item in items)
+            {
                 // if no container is defined.
                 var container = generator.ContainerFromItem(item) as GroupItem;
-                if (container == null) {
+                if (container == null)
+                {
                     continue;
                 }
 
@@ -151,18 +184,21 @@
                 displayAdorner &= rect.Top < 0;
 
                 // the child is partially or completely in view
-                if (displayAdorner) {
+                if (displayAdorner)
+                {
                     double top = Math.Abs(rect.Top);
 
                     // if we already have an adorner, update position
                     var headerAdorner = GetAdorner(container);
-                    if (headerAdorner != null) {
+                    if (headerAdorner != null)
+                    {
                         headerAdorner.UpdateLocation(top);
                         return;
                     }
 
                     // else, construct a new one.
-                    var adorner = new HeaderAdorner(container) {
+                    var adorner = new HeaderAdorner(container)
+                    {
                         DataContext = item,
                         HeaderTemplate = headerTemplate,
                         Top = top
@@ -172,10 +208,12 @@
                     // save a reference to this element,
                     CurrentGroupItem.Add(container, new WeakReference<HeaderAdorner>(adorner));
                 }
-                else {
+                else
+                {
                     // locate and remove the adorner
                     var adorner = GetAdorner(container);
-                    if (adorner != null) {
+                    if (adorner != null)
+                    {
                         adornerLayer.Remove(adorner);
                         CurrentGroupItem.Remove(container);
                     }
@@ -183,15 +221,20 @@
             }
         }
 
-        private static HeaderAdorner GetAdorner(GroupItem container) {
-            if (CurrentGroupItem.ContainsKey(container)) {
+        private static HeaderAdorner GetAdorner(GroupItem container)
+        {
+            if (CurrentGroupItem.ContainsKey(container))
+            {
                 HeaderAdorner adorner;
-                if (CurrentGroupItem[container].TryGetTarget(out adorner)) {
+                if (CurrentGroupItem[container].TryGetTarget(out adorner))
+                {
                     return adorner;
                 }
             }
 
             return null;
         }
+
+        #endregion
     }
 }
