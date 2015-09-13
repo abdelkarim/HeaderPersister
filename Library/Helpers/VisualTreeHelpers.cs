@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace WpfGhost.Helpers
+namespace WpfGhost.Controls.Helpers
 {
     public static class VisualTreeHelpers
     {

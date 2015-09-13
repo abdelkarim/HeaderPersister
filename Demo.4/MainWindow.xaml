@@ -1,16 +1,13 @@
-﻿<Window x:Class="Demo.MainWindow"
+﻿<Window x:Class="Demo._4.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vms="clr-namespace:Demo.ViewModels"
+        xmlns:viewModels="clr-namespace:Demo.ViewModels"
         xmlns:lc="clr-namespace:WpfGhost.Controls;assembly=WpfGhost.Controls.HeaderPersister"
-        mc:Ignorable="d"
         Title="HeaderPersister demo application - abdelkarim.se@gmail.com"
         Height="350"
         Width="525">
     <Window.DataContext>
-        <vms:MainViewModel />
+        <viewModels:MainViewModel />
     </Window.DataContext>
 
     <Window.Resources>
@@ -79,5 +76,4 @@
             </ListBox.ItemTemplate>
         </ListBox>
     </Grid>
-
 </Window>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace Demo.Model
 {
@@ -15,7 +14,7 @@ namespace Demo.Model
         public string Hash { get; set; }
         public int FilesCount { get; set; }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
             if (handler != null)

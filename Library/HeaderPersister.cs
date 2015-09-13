@@ -4,16 +4,21 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using WpfGhost.Helpers;
+using WpfGhost.Controls.Helpers;
 
-namespace WpfGhost
+namespace WpfGhost.Controls
 {
     public static class HeaderPersister
     {
         #region "Fields"
 
+#if NET40
+        // maps an itemsControl to the currently highlighted group item
+        private static readonly Dictionary<GroupItem, WeakReference> CurrentGroupItem;
+#else
         // maps an itemsControl to the currently highlighted group item
         private static readonly Dictionary<GroupItem, WeakReference<HeaderAdorner>> CurrentGroupItem;
+#endif
 
         #endregion
 
@@ -24,7 +29,11 @@ namespace WpfGhost
         /// </summary>
         static HeaderPersister()
         {
+#if NET40
+            CurrentGroupItem = new Dictionary<GroupItem, WeakReference>();
+#else
             CurrentGroupItem = new Dictionary<GroupItem, WeakReference<HeaderAdorner>>();
+#endif
         }
 
         #endregion
@@ -157,7 +166,14 @@ namespace WpfGhost
             var headerTemplate = GetHeaderTemplate(itemsControl);
 
             var generator = itemsControl.ItemContainerGenerator;
-            var items = generator.Items.ToList();
+            IList<object> items;
+            
+
+#if NET40
+            items = generator.GetItems();
+#else
+            items = generator.Items.ToList();
+#endif
 
             // find the view rect
             var viewRect = new Rect(new Point(0, 0), scrollContentPresenter.RenderSize);
@@ -206,7 +222,14 @@ namespace WpfGhost
                     adornerLayer.Add(adorner);
 
                     // save a reference to this element,
+#if NET40
+                    CurrentGroupItem.Add(container, new WeakReference(adorner));
+#else
                     CurrentGroupItem.Add(container, new WeakReference<HeaderAdorner>(adorner));
+#endif
+
+
+
                 }
                 else
                 {
@@ -223,6 +246,16 @@ namespace WpfGhost
 
         private static HeaderAdorner GetAdorner(GroupItem container)
         {
+#if NET40
+            if (CurrentGroupItem.ContainsKey(container))
+            {
+                var weakRef = CurrentGroupItem[container];
+                if (weakRef.IsAlive)
+                {
+                    return (HeaderAdorner) weakRef.Target;
+                }
+            }
+#else
             if (CurrentGroupItem.ContainsKey(container))
             {
                 HeaderAdorner adorner;
@@ -231,6 +264,7 @@ namespace WpfGhost
                     return adorner;
                 }
             }
+#endif
 
             return null;
         }

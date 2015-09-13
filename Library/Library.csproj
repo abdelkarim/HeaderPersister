@@ -7,8 +7,8 @@
     <ProjectGuid>{7FE95CCF-31A1-463D-905F-3356047487DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WpfGhost</RootNamespace>
-    <AssemblyName>WpfGhost.HeaderPersister</AssemblyName>
+    <RootNamespace>WpfGhost.Controls</RootNamespace>
+    <AssemblyName>WpfGhost.Controls.HeaderPersister</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

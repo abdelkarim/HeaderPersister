@@ -17,7 +17,7 @@ namespace Demo.ViewModels
             {
                 if (Equals(value, _commits)) return;
                 _commits = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Commits");
             }
         }
 
@@ -52,7 +52,7 @@ namespace Demo.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));

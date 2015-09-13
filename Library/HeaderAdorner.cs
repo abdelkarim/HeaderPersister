@@ -6,7 +6,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace WpfGhost
+namespace WpfGhost.Controls
 {
     public class HeaderAdorner : Adorner
     {
