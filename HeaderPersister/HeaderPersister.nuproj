@@ -27,10 +27,8 @@
     <Description>HeaderPersister is a small utility class that persist the header of individual GroupItems while scrolling. </Description>
     <ReleaseNotes>
     </ReleaseNotes>
-    <ProjectUrl>
-    </ProjectUrl>
-    <LicenseUrl>
-    </LicenseUrl>
+    <ProjectUrl>https://github.com/abdelkarim/HeaderPersister</ProjectUrl>
+    <LicenseUrl>https://opensource.org/licenses/MIT</LicenseUrl>
     <Copyright>Copyright © Abdelkarim Sellamna</Copyright>
     <Tags>Wpf Controls CustomControl</Tags>
   </PropertyGroup>

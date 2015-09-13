@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿// Copyright (c) 'Abdelkarim Sellamna'. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System.Windows;
 using System.Windows.Media;
 
 namespace WpfGhost.Controls.Helpers
